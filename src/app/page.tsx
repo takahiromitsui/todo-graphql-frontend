@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import TodoItem, { TodoProps } from '@/components/TodoItem';
+import TodoList from '@/components/TodoList';
 
 export default function Home() {
 	const todos: TodoProps[] = [
@@ -25,11 +26,7 @@ export default function Home() {
 				</Link>
 			</div>
 			<div>
-				<ul className='ml-4 mt-4 flex flex-col space-y-4'>
-					{todos.map(todo => (
-						<TodoItem key={todo.id} {...todo} />
-					))}
-				</ul>
+				<TodoList />
 			</div>
 		</main>
 	);
