@@ -3,7 +3,7 @@ import { useState } from 'react';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { CheckIcon, TrashIcon } from '@radix-ui/react-icons';
 import { useMutation } from '@apollo/client';
-import { UPDATE_TODO } from '@/graphql/queries';
+import { DELETE_TODO, FETCH_TODOS, UPDATE_TODO } from '@/graphql/queries';
 
 export interface TodoProps {
 	id: string;
@@ -22,8 +22,12 @@ export default function TodoItem({ id, title, completed }: TodoProps) {
 		setIsChecked(checked);
 	};
 
+	const [deleteTodo] = useMutation(DELETE_TODO, {
+		refetchQueries: [{ query: FETCH_TODOS }],
+	});
+
 	return (
-		<div className='flex items-center w-80'>
+		<div className='flex items-center w-96'>
 			<Checkbox.Root
 				className='appearance-none bg-slate-100 h-6 w-6 border rounded flex items-center justify-center hover:bg-slate-300'
 				id={id}
@@ -45,7 +49,9 @@ export default function TodoItem({ id, title, completed }: TodoProps) {
 			<TrashIcon
 				className='appearance-none h-6 w-6 text-red-500 cursor-pointer ml-auto'
 				onClick={() => {
-					console.log('clicked');
+					deleteTodo({
+						variables: { id: id },
+					});
 				}}
 			/>
 		</div>
