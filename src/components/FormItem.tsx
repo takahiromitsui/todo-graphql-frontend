@@ -1,9 +1,23 @@
 'use client';
+import { CREATE_TODO, FETCH_TODOS } from '@/graphql/queries';
+import { useMutation } from '@apollo/client';
 import * as Form from '@radix-ui/react-form';
 import Link from 'next/link';
 export default function FormItem() {
+	const [createTodo] = useMutation(CREATE_TODO, {
+		refetchQueries: [{ query: FETCH_TODOS }],
+	});
 	return (
-		<Form.Root className='w-1/2'>
+		<Form.Root
+			className='w-1/2'
+			onSubmit={event => {
+				const { todo } = Object.fromEntries(new FormData(event.currentTarget));
+				createTodo({
+					variables: { title: todo },
+				});
+				event.preventDefault();
+			}}
+		>
 			<Form.Field className='grid mb-[10px]' name='todo'>
 				<div className='flex items-baseline justify-between'>
 					<Form.Message className='text-3 opacity-[0.8]' match='valueMissing'>

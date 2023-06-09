@@ -23,3 +23,13 @@ export const UPDATE_TODO = gql`
 		}
 	}
 `;
+
+export const CREATE_TODO = gql`
+	mutation CreateTodo($title: String!) {
+		createTodo(title: $title) {
+			todo {
+				id
+			}
+		}
+	}
+`;
