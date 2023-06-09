@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { CheckIcon, TrashIcon } from '@radix-ui/react-icons';
+import { useMutation } from '@apollo/client';
+import { UPDATE_TODO } from '@/graphql/queries';
 
 export interface TodoProps {
 	id: string;
@@ -10,10 +12,14 @@ export interface TodoProps {
 }
 
 export default function TodoItem({ id, title, completed }: TodoProps) {
-	const [isChecked, setIsChecked] = useState(false);
+	const [updateTodoCompleted] = useMutation(UPDATE_TODO);
+	const [isChecked, setIsChecked] = useState(completed);
 	const [isHovered, setIsHovered] = useState(false);
 
 	const handleCheckboxChange = (checked: boolean) => {
+		updateTodoCompleted({
+			variables: { id: id },
+		});
 		setIsChecked(checked);
 	};
 
