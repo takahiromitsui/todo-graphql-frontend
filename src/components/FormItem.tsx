@@ -6,15 +6,16 @@ import * as Toast from '@radix-ui/react-toast';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 export default function FormItem() {
-	const [createTodo] = useMutation(CREATE_TODO, {
+	const [createTodo, { data, loading, error }] = useMutation(CREATE_TODO, {
 		refetchQueries: [{ query: FETCH_TODOS }],
 	});
 	const [open, setOpen] = useState(false);
-  const timerRef = useRef(0);
+	const timerRef = useRef(0);
 
-  useEffect(() => {
-    return () => clearTimeout(timerRef.current);
-  }, []);
+	useEffect(() => {
+		return () => clearTimeout(timerRef.current);
+	}, []);
+
 	return (
 		<Toast.Provider swipeDirection='right'>
 			<Form.Root
@@ -28,10 +29,10 @@ export default function FormItem() {
 						variables: { title: todo },
 					});
 					setOpen(false);
-          window.clearTimeout(timerRef.current);
-          timerRef.current = window.setTimeout(() => {
-            setOpen(true);
-          }, 100);
+					window.clearTimeout(timerRef.current);
+					timerRef.current = window.setTimeout(() => {
+						setOpen(true);
+					}, 100);
 					event.currentTarget.reset();
 				}}
 			>
@@ -63,16 +64,22 @@ export default function FormItem() {
 					</Link>
 				</div>
 			</Form.Root>
-			<Toast.Root
-				className="bg-white rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut"
-				open={open}
-				onOpenChange={setOpen}
-			>
-				<Toast.Title className='[grid-area:_title] mb-[5px] font-medium text-black text-[15px]'>
-					Created a new todo
-				</Toast.Title>
-			</Toast.Root>
-			<Toast.Viewport className='[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none' />
+			{error ? (
+				<div>Error: {error.message}</div>
+			) : (
+				<>
+					<Toast.Root
+						className="bg-white rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut"
+						open={open}
+						onOpenChange={setOpen}
+					>
+						<Toast.Title className='[grid-area:_title] mb-[5px] font-medium text-black text-[15px]'>
+							Created a new todo
+						</Toast.Title>
+					</Toast.Root>
+					<Toast.Viewport className='[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none' />
+				</>
+			)}
 		</Toast.Provider>
 	);
 }
