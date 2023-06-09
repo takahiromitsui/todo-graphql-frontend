@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TODO App
+
+This is a TODO app built using Next.js 13 and Apollo to fetch data from a GraphQL server. It consists of two main pages, "/" and "/todo".
+I also created [TODO graphql server](https://github.com/takahiromitsui/Todo-GraphQL-Server.git)
+
+## Pages
+
+- **"/"** - All Todos: On this page, you can view a list of all the todos. The todos are fetched from the GraphQL server using the `FETCH_TODOS` query defined in `graphql/queries.ts`. Each todo item displays the title and completion status.
+
+- **"/todo"** - Create Todo: This page allows you to create new todos. There is a form where you can enter the title of the todo and submit it using the "Create" button. The new todo is created on the server using the `CREATE_TODO` mutation defined in `graphql/queries.ts`.
+
+## GraphQL Queries and Mutations
+
+The following GraphQL queries and mutations are used in this application:
+
+- **FETCH_TODOS**: This query fetches all the todos from the server. It returns the `id`, `title`, and `completed` status of each todo.
+
+- **UPDATE_TODO**: This mutation is used to update the completion status of a todo. It takes the `id` of the todo as an argument and returns the updated `id`, `title`, and `completed` status.
+
+- **CREATE_TODO**: This mutation is used to create a new todo. It takes the `title` of the todo as an argument and returns the `id` of the newly created todo.
+
+- **DELETE_TODO**: This mutation is used to delete a todo. It takes the `id` of the todo as an argument and returns the `id` of the deleted todo.
+
+These queries and mutations are defined in the `graphql/queries.ts` file.
 
 ## Getting Started
 
-First, run the development server:
+To run the TODO app locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. Clone the repository: `git clone https://github.com/takahiromitsui/todo-graphql-frontend.git`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Open your browser and navigate to `http://localhost:3000`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Make sure to have a GraphQL server running and properly configured to handle the queries and mutations used in this app. Update the GraphQL server URL in the Apollo client configuration if necessary.
